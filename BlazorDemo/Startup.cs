@@ -20,8 +20,6 @@ namespace BlazorDemo
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
@@ -29,15 +27,6 @@ namespace BlazorDemo
 
             //Configura Health Checks
             services.AddHealthChecks()
-                //.AddCheck("Foo Service", () =>
-                //{
-                //    //do the real checks
-                //    //then return the real value (healthy or not)
-                //    return HealthCheckResult.Healthy("The check of the Foo service worked.");
-                //}, new[] { "service" } //tags
-                //)
-
-                //.AddCheck("Bar Service", () => HealthCheckResult.Degraded("The check of the Bar service did not work well."), new[] { "service" })
                 .AddCheck<ResponseTimeHealthCheck>("Network speed test", null, new[] { "service" })
                 .AddCheck("Database", () => HealthCheckResult.Healthy("The check of the database worked."), new[] { "database", "sql" });
 
@@ -47,7 +36,6 @@ namespace BlazorDemo
             services.AddSingleton<ResponseTimeHealthCheck>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
